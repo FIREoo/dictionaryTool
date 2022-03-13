@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wpf_translate_dictionary"
         mc:Ignorable="d"
-        Title="Cambridge Dictionary" Height="600" Width="416.981" Topmost="True" WindowStyle="ToolWindow">
+        Title="Cambridge Dictionary" Height="600" Width="433.981" WindowStyle="ToolWindow" Topmost="True">
     <Grid Background="#FFEEEEEE">
-        <Grid x:Name="grid_definition" HorizontalAlignment="Stretch" Height="Auto" Margin="0,75,0,0" VerticalAlignment="Stretch" Width="Auto" Background="#FFE0E0E2" MouseWheel="Tb_definition_MouseWheel">
+        <Grid x:Name="grid_definition" HorizontalAlignment="Stretch" Height="Auto" Margin="0,46,0,0" VerticalAlignment="Stretch" Width="Auto" Background="#FFE0E0E2" MouseWheel="Tb_definition_MouseWheel">
             <TextBlock x:Name="tb_definition" HorizontalAlignment="Left" Margin="10,0,0,0" TextWrapping="Wrap" Text="definition" VerticalAlignment="Top" FontSize="18" SizeChanged="Tb_definition_SizeChanged" MouseWheel="Tb_definition_MouseWheel"/>
         </Grid>
-        <Grid x:Name="grid_top" HorizontalAlignment="Stretch" Height="75" VerticalAlignment="Top" Width="Auto" Background="#FFEEEEEE">
-            <TextBox x:Name="tb_input" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" Text="Dictionary" VerticalAlignment="Top" Width="269" FontSize="20" FontWeight="Bold" Background="#FFD8D8D8" KeyDown="Tb_input_KeyDown" PreviewMouseRightButtonDown="Tb_input_PreviewMouseRightButtonDown" PreviewMouseRightButtonUp="Tb_input_PreviewMouseRightButtonUp" ToolTip="Right click to paste"/>
-            <Button x:Name="btn_serach" Content="Search" HorizontalAlignment="Left" Margin="269,0,0,0" VerticalAlignment="Top" Width="75" Click="Btn_serach_Click" FontSize="20" Height="36"/>
-            <TextBlock x:Name="tb_parts_of_speech" HorizontalAlignment="Left" Margin="21,45,0,0" TextWrapping="Wrap" Text="." VerticalAlignment="Top" FontSize="14" FontStyle="Italic"/>
+        <Grid x:Name="grid_top" HorizontalAlignment="Stretch" Height="46" VerticalAlignment="Top" Width="Auto" Background="#FFEEEEEE">
+            <TextBox x:Name="tb_input" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="36" TextWrapping="Wrap" Text="dictionary" VerticalAlignment="Top" Width="269" FontSize="20" FontWeight="Bold" Background="#FFD8D8D8" KeyDown="Tb_input_KeyDown" PreviewMouseRightButtonDown="Tb_input_PreviewMouseRightButtonDown" PreviewMouseRightButtonUp="Tb_input_PreviewMouseRightButtonUp" ToolTip="Right click to paste"/>
+            <Button x:Name="btn_serach" Content="Search" HorizontalAlignment="Left" Margin="269,0,0,0" VerticalAlignment="Top" Width="75" Click="Btn_serach_Click" FontSize="20" Height="36" MouseDown="Btn_serach_MouseDown"/>
+            <CheckBox x:Name="cb_more_info" Content="More" HorizontalAlignment="Left" Margin="349,10,-20,0" VerticalAlignment="Top" Click="Cb_more_info_Click" IsChecked="True"/>
         </Grid>
 
 
