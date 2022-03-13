@@ -48,16 +48,11 @@ namespace Wpf_translate_dictionary
             //string str = WebUtility.HtmlDecode(node.OuterHtml).ToString();
             //Console.WriteLine("fix Name: " + node.Name + "\n" + str);
 
-            //查找的字
-            //string search_word = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div[1]/div[2]/article/div[2]/div[4]/div/div/div/div[2]/div[1]/span/span").InnerText;
-            //Console.WriteLine("search_word:" + search_word);
-
             HtmlNodeCollection main_definition_nodes = new HtmlNodeCollection(null);
             HtmlNode dict_node = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div[1]/div[2]/article/div[2]");
             HtmlNode di_body_node = dict_node.SelectSingleNode("//div[@class='di-body']");
 
             HtmlNodeCollection entry_body_nodes = di_body_node.SelectNodes("//div[@class='entry']/div[@class='entry-body']/div[@class='pr entry-body__el']");//不知道為什麼 神奇的找到多個"entry-body" 裡的"pr entry-body__el"
-            //int total_definition_count = entry_body_nodes.Count();
 
             HtmlDocument entry_body_doc = new HtmlDocument();
             foreach (HtmlNode entry_body_node in entry_body_nodes)
@@ -70,9 +65,6 @@ namespace Wpf_translate_dictionary
                 foreach (HtmlNode sense_body_node in sense_body_nodes)
                 {
                     IList<HtmlNode> definition_one_block_nodes = findNodesClass(sense_body_node.ChildNodes, "def-block ddef_block ");
-                    //HtmlDocument definition_grid_doc = new HtmlDocument();
-                    //definition_grid_doc.LoadHtml(sense_body_node.InnerHtml);
-                    //HtmlNodeCollection definition_one_block_nodes = definition_grid_doc.DocumentNode.SelectNodes("//div[@class='def-block ddef_block ']");//  /div[@class='ddef_h']
 
                     foreach (HtmlNode definition_one_block_node in definition_one_block_nodes)
                     {
@@ -95,104 +87,12 @@ namespace Wpf_translate_dictionary
                                 addToTextBlock(" - " + findSingleChild(example_node, "//span[@class='trans dtrans dtrans-se hdb break-cj']").InnerText, Color.FromRgb(34, 134, 235), 16, style_Italic: true);
                             }
                         }
-                        //IList<HtmlNode> example_dexamp_node = findNodesClass(definition_more_node[0].ChildNodes, "examp dexamp");
-                        //for (int example = 0; example < example_dexamp_node.Count; example++)//foreach "examp dexamp"
-                        //{
-                        //    Console.WriteLine(" 例句 英:" + example_dexamp_node[example].ChildNodes[1].InnerText);
-                        //    Console.WriteLine(" 例句 中:" + example_dexamp_node[example].ChildNodes[3].InnerText);
-                        //    addToTextBlock(" - " + example_dexamp_node[example].ChildNodes[1].InnerText, Color.FromRgb(29, 42, 87), 16);
-                        //    addToTextBlock(" - " + example_dexamp_node[example].ChildNodes[3].InnerText, Color.FromRgb(34, 134, 235), 16);
-                        //}
                         addToTextBlock("", Color.FromRgb(0, 0, 0));
                     }
 
 
                 }
                 int a = sense_body_nodes.Count;
-            }
-
-
-
-            return;
-
-            //詞性
-            //string parts_of_speech = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div[1]/div[2]/article/div[2]/div[4]/div/div/div/div[2]/div[2]/span").InnerText;
-            //tb_parts_of_speech.Text = parts_of_speech + ".";
-            //Console.WriteLine("parts_of_speech:" + parts_of_speech);
-
-            try
-            {
-
-
-                //定義
-                //HtmlNodeCollection definition_Nodes = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div[1]/div[2]/article/div[2]/div[4]/div/div/div/div[3]/div[1]/div[2]").ChildNodes;
-                HtmlNodeCollection definition_Nodes_raw = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div[1]/div[2]/article/div[2]/div[4]/div[1]/div/div/div[3]").ChildNodes;
-                // /html/body/div[2]/div/div[1]/div[2]/article/div[2]/div[4]/div/div/div/div[3]
-                IList<HtmlNode> definition_Nodes = definition_Nodes_raw.Where(node => node.Name == "div").ToList();
-                int main_def_count = definition_Nodes.Count(); //pos-body  count
-
-                //sense-body dsense_b --> definition
-                for (int i = 0; i < main_def_count; i++)
-                {
-                    //pr dsense node => definition_Nodes[i].ChildNodes
-                    IList<HtmlNode> sense_body_node = findNodesClass(definition_Nodes[i].ChildNodes, "sense-body dsense_b");
-
-
-                    //解釋 片語 更多範例
-                    //def-block ddef_block 
-                    if (sense_body_node.Count > 1) throw new Exception("sense_body_node   should be only one");
-                    IList<HtmlNode> sub_def_nodes = findNodesClass(sense_body_node[0].ChildNodes, "def-block ddef_block "); //daccord 更多範例
-
-                    for (int sub = 0; sub < sub_def_nodes.Count; sub++)//foreach "def-block ddef_block "
-                    {
-                        IList<HtmlNode> definition_node = findNodesClass(sub_def_nodes[sub].ChildNodes, "ddef_h");
-                        Console.WriteLine("英:" + definition_node[0].ChildNodes[1].InnerText);
-                        addToTextBlock(definition_node[0].ChildNodes[1].InnerText, Color.FromRgb(29, 42, 87));
-                        IList<HtmlNode> definition_more_node = findNodesClass(sub_def_nodes[sub].ChildNodes, "def-body ddef_b");
-                        Console.WriteLine("中:" + definition_more_node[0].ChildNodes[1].InnerText);
-                        addToTextBlock(definition_more_node[0].ChildNodes[1].InnerText, Color.FromRgb(34, 134, 235));
-                        IList<HtmlNode> example_dexamp_node = findNodesClass(definition_more_node[0].ChildNodes, "examp dexamp");
-                        for (int example = 0; example < example_dexamp_node.Count; example++)//foreach "examp dexamp"
-                        {
-                            Console.WriteLine(" 例句 英:" + example_dexamp_node[example].ChildNodes[1].InnerText);
-                            Console.WriteLine(" 例句 中:" + example_dexamp_node[example].ChildNodes[3].InnerText);
-                            addToTextBlock(" - " + example_dexamp_node[example].ChildNodes[1].InnerText, Color.FromRgb(29, 42, 87), 16);
-                            addToTextBlock(" - " + example_dexamp_node[example].ChildNodes[3].InnerText, Color.FromRgb(34, 134, 235), 16);
-                        }
-                        addToTextBlock("", Color.FromRgb(0, 0, 0));
-                    }
-                    addToTextBlock("---------", Color.FromRgb(0, 0, 0));
-
-                    //pr phrase-block dphrase-block 
-                    IList<HtmlNode> definition_phrase_node = findNodesClass(sense_body_node[0].ChildNodes, "pr phrase-block dphrase-block ");
-
-
-                    //daccord
-                }
-
-
-
-
-                //for (int i = 0; i < definition_Nodes.Count() - 2; i++)
-                //{
-                //    addToTextBlock(definition_Nodes[i].ChildNodes[3].ChildNodes[1].InnerText, Color.FromRgb(29, 42, 87));
-                //    addToTextBlock(definition_Nodes[i].ChildNodes[4].ChildNodes[1].InnerText, Color.FromRgb(34, 134, 235));
-                //    addToTextBlock("", Color.FromRgb(0, 0, 0));
-                //    int example_sentence_count = definition_Nodes[i].ChildNodes[4].ChildNodes.Count() - 4;
-                //    for (int index = 0; index < example_sentence_count; index++)
-                //    {
-                //        int example_index = index + 3;
-                //        //Console.WriteLine($"example({index + 1}):" + definition_Nodes[i].ChildNodes[4].ChildNodes[example_index].ChildNodes[1].InnerText);
-                //        //Console.WriteLine($"example({index + 1}):" + definition_Nodes[i].ChildNodes[4].ChildNodes[example_index].ChildNodes[3].InnerText);
-                //        addToTextBlock(" - " + definition_Nodes[i].ChildNodes[4].ChildNodes[example_index].ChildNodes[1].InnerText, Color.FromRgb(29, 42, 87), 16);
-                //        addToTextBlock(" - " + definition_Nodes[i].ChildNodes[4].ChildNodes[example_index].ChildNodes[3].InnerText, Color.FromRgb(34, 134, 235), 16);
-                //    }
-                //    addToTextBlock("", Color.FromRgb(0, 0, 0));
-                //}
-            }
-            catch (InvalidCastException ex)
-            {
-                MessageBox.Show(ex.Message, "Crawler fail");
             }
         }
         private void Btn_serach_MouseDown(object sender, MouseButtonEventArgs e)
