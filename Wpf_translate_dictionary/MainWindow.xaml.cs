@@ -50,6 +50,11 @@ namespace Wpf_translate_dictionary
 
             HtmlNodeCollection main_definition_nodes = new HtmlNodeCollection(null);
             HtmlNode dict_node = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div[1]/div[2]/article/div[2]");
+            if(dict_node == null)
+            {
+                addToTextBlock("---N/A---", Color.FromRgb(0, 0, 0),style_Italic:true);
+                return;
+            }
             HtmlNode di_body_node = dict_node.SelectSingleNode("//div[@class='di-body']");
 
             HtmlNodeCollection entry_body_nodes = di_body_node.SelectNodes("//div[@class='entry']/div[@class='entry-body']/div[@class='pr entry-body__el']");//不知道為什麼 神奇的找到多個"entry-body" 裡的"pr entry-body__el"
@@ -68,24 +73,32 @@ namespace Wpf_translate_dictionary
 
                     foreach (HtmlNode definition_one_block_node in definition_one_block_nodes)
                     {
-                        HtmlNode eng_def_node = findSingleChild(definition_one_block_node, "//div[@class='ddef_h']/div[@class='def ddef_d db']");
-                        //Console.WriteLine("英:" + eng_def_node.InnerText);
-                        addToTextBlock(" ✦ " + eng_def_node.InnerText, Color.FromRgb(29, 42, 87));
-
-
-                        string ch_trans = findSingleChild(definition_one_block_node, "//div[@class='def-body ddef_b']").ChildNodes[1].InnerText;
-                        //Console.WriteLine("中:" + definition_more_node[0].ChildNodes[1].InnerText);
-                        addToTextBlock("  "+ch_trans, Color.FromRgb(34, 134, 235));
-
-                        if (flag_more_info)
+                        try
                         {
-                            addToTextBlock("", Color.FromRgb(0, 0, 0),9);
-                            HtmlNodeCollection example_nodes = findChilds(definition_one_block_node, "//div[@class='def-body ddef_b']/div[@class='examp dexamp']");
-                            foreach (HtmlNode example_node in example_nodes) //trans dtrans dtrans-se hdb break-cj
+                            HtmlNode eng_def_node = findSingleChild(definition_one_block_node, "//div[@class='ddef_h']/div[@class='def ddef_d db']");
+                            //Console.WriteLine("英:" + eng_def_node.InnerText);
+                            addToTextBlock(" ✦ " + eng_def_node.InnerText, Color.FromRgb(29, 42, 87));
+
+
+                            string ch_trans = findSingleChild(definition_one_block_node, "//div[@class='def-body ddef_b']").ChildNodes[1].InnerText;
+                            //Console.WriteLine("中:" + definition_more_node[0].ChildNodes[1].InnerText);
+                            addToTextBlock("  " + ch_trans, Color.FromRgb(34, 134, 235));
+
+                            if (flag_more_info)
                             {
-                                addToTextBlock(" - " + findSingleChild(example_node, "//span[@class='eg deg']").InnerText, Color.FromRgb(29, 42, 87), 16, style_Italic: true);
-                                addToTextBlock(" - " + findSingleChild(example_node, "//span[@class='trans dtrans dtrans-se hdb break-cj']").InnerText, Color.FromRgb(34, 134, 235), 16, style_Italic: true);
+                                addToTextBlock("", Color.FromRgb(0, 0, 0), 9);
+                                HtmlNodeCollection example_nodes = findChilds(definition_one_block_node, "//div[@class='def-body ddef_b']/div[@class='examp dexamp']");
+                                foreach (HtmlNode example_node in example_nodes) //trans dtrans dtrans-se hdb break-cj
+                                {
+                                    addToTextBlock(" - " + findSingleChild(example_node, "//span[@class='eg deg']").InnerText, Color.FromRgb(29, 42, 87), 16, style_Italic: true);
+                                    addToTextBlock(" - " + findSingleChild(example_node, "//span[@class='trans dtrans dtrans-se hdb break-cj']").InnerText, Color.FromRgb(34, 134, 235), 16, style_Italic: true);
+                                }
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            return;
+                            MessageBox.Show(ex.Message, "Error html decode");
                         }
                         addToTextBlock("", Color.FromRgb(0, 0, 0));
                     }
